@@ -27,6 +27,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
 
+
         butReg = findViewById(R.id.buttonRegister);
         editEmail = findViewById(R.id.editEmail);
         editPass = findViewById(R.id.editPassword);
@@ -140,6 +141,12 @@ public class RegistrationActivity extends AppCompatActivity {
             editSurname.setError(null);
             return true;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
 }

@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements LoginResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+
         butLog = findViewById(R.id.buttonRegister);
         editEmail = findViewById(R.id.editEmail);
         editPass = findViewById(R.id.editPassword);
@@ -124,4 +125,11 @@ public class LoginActivity extends AppCompatActivity implements LoginResponse {
         editor.apply();
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
 }

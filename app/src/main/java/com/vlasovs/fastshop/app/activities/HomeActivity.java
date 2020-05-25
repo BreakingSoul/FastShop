@@ -1,13 +1,18 @@
 package com.vlasovs.fastshop.app.activities;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView loggedUserTW;
     private Button butReg, butLog, butSignOut;
+    private DrawerLayout drawer;
     private User user;
 
     private static final String SHARED_PREFS = "sharedPrefs";
@@ -29,10 +35,18 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         butReg = findViewById(R.id.butReg);
         butLog = findViewById(R.id.butLog);
         butSignOut = findViewById(R.id.butSignOut);
-        loggedUserTW = findViewById((R.id.textUser));
+        loggedUserTW = findViewById(R.id.textUser);
+        drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         butReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +122,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -134,4 +145,14 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

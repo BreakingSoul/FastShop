@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_24dp"
+        android:title="Home" />
+
+    <item android:title="Shopping">
+
+        <menu>
+
+            <group android:checkableBehavior="single"
+                android:id="@+id/group_shopping">
+
+                <item
+                    android:id="@+id/nav_categories"
+                    android:icon="@drawable/ic_categories_24dp"
+                    android:title="Categories" />
+
+                <item
+                    android:id="@+id/nav_shop_cart"
+                    android:icon="@drawable/ic_shopping_cart_24dp"
+                    android:title="Shopping Cart" />
+
+                <item
+                    android:id="@+id/nav_wish_list"
+                    android:icon="@drawable/ic_wish_list_24dp"
+                    android:title="Wish List" />
+
+                <item
+                    android:id="@+id/nav_history"
+                    android:icon="@drawable/ic_purchase_history_24dp"
+                    android:title="Purchases" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item android:title="Services">
+
+        <menu>
+
+            <group android:checkableBehavior="single"
+                android:id="@+id/group_services">
+
+                <item
+                    android:id="@+id/nav_setting"
+                    android:icon="@drawable/ic_settings_24dp"
+                    android:title="Settings" />
+
+                <item
+                    android:id="@+id/nav_support"
+                    android:icon="@drawable/ic_support_chat_24dp"
+                    android:title="Customer Service" />
+            </group>
+
+        </menu>
+
+    </item>
+
+    <group android:checkableBehavior="single"
+         android:id="@+id/group_exit">
+
+      <item
+          android:id="@+id/nav_log_out"
+          android:icon="@drawable/ic_log_out_24dp"
+          android:title="Log Out" />
+
+    </group>
+
+</menu>

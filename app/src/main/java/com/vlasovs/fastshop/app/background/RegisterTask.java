@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.vlasovs.fastshop.app.activities.LoginActivity;
 import com.vlasovs.fastshop.app.activities.RegistrationActivity;
 import com.vlasovs.fastshop.app.classes.LoadingDialog;
 
