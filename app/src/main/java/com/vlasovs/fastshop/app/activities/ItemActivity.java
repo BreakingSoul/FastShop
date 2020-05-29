@@ -1,0 +1,160 @@
+package com.vlasovs.fastshop.app.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.vlasovs.fastshop.R;
+import com.vlasovs.fastshop.app.background.ItemDescriptionResponse;
+import com.vlasovs.fastshop.app.background.ItemDescriptionTask;
+import com.vlasovs.fastshop.app.classes.Item;
+import com.vlasovs.fastshop.app.classes.PurchaseDialog;
+
+import java.util.Locale;
+
+public class ItemActivity extends AppCompatActivity implements View.OnClickListener, ItemDescriptionResponse {
+
+    private Item item;
+    private ImageView image;
+    private Button addFav, addCart, incBut, decBut, showReviews;
+    private TextView itemName, itemDesc, itemCost;
+    private EditText editCount;
+    private RatingBar rating;
+
+    private PurchaseDialog pD;
+
+    private int userId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_item);
+
+        Intent intent = getIntent();
+        item = intent.getParcelableExtra("item");
+        userId = intent.getIntExtra("userid", -1);
+
+        image = findViewById(R.id.itemActImage);
+        addFav = findViewById(R.id.itemActFavBut);
+        addCart = findViewById(R.id.itemActCartBut);
+        incBut = findViewById(R.id.buttonCounterInc);
+        decBut = findViewById(R.id.buttonCounterDec);
+        showReviews = findViewById(R.id.itemActReviewBut);
+        itemName = findViewById(R.id.itemActName);
+        itemDesc= findViewById(R.id.itemActDescription);
+        itemCost = findViewById(R.id.itemActPrice);
+        editCount = findViewById(R.id.editCounter);
+        rating = findViewById(R.id.itemActRating);
+
+        addFav.setOnClickListener(this);
+        addCart.setOnClickListener(this);
+        incBut.setOnClickListener(this);
+        decBut.setOnClickListener(this);
+        showReviews.setOnClickListener(this);
+
+        editCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int amount;
+                if (editable.length() == 1 && editable.toString().equals("0")) {
+                    editCount.setText("1");
+                }
+                if (!editable.toString().equals("")) {
+                    amount = Integer.parseInt(editCount.getText().toString());
+                    if (amount <= 0) {
+                        editCount.setText(String.valueOf(1));
+                        amount = 1;
+                    }
+                    float total = amount * item.getPrice();
+                    itemCost.setText(String.format(Locale.getDefault(), "%.2f", total) + "€");
+                }
+            }
+        });
+
+        setActivityLook();
+
+  //     Toast.makeText(this, "" + userId, Toast.LENGTH_LONG).show();
+    }
+
+    private void setActivityLook() {
+
+        Glide.with(getApplicationContext()).load(item.getPictureURL()).into(image);
+        itemName.setText(item.getName());
+        itemCost.setText(String.format(Locale.getDefault(), "%.2f", item.getPrice())+"€");
+        showReviews.setText(showReviews.getText() + " (" + String.format(Locale.getDefault(), "%d", item.getReviews()) + ")");
+        rating.setRating(item.getRating());
+
+        ItemDescriptionTask iDT = new ItemDescriptionTask();
+        iDT.delegate = this;
+        iDT.execute(item.getId());
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        int currentAmount;
+        switch (view.getId()){
+            case R.id.itemActFavBut:
+                break;
+            case R.id.itemActCartBut:
+                pD = new PurchaseDialog(this);
+                pD.startPurchaseDialog();
+                break;
+            case R.id.buttonCounterInc:
+                if (editCount.getText().toString().equals("")){
+                editCount.setText("0");
+            } else {
+                    currentAmount = Integer.parseInt(editCount.getText().toString()) + 1;
+                    editCount.setText(String.valueOf(currentAmount));
+                }
+                break;
+            case R.id.buttonCounterDec:
+                if (editCount.getText().toString().equals("")){
+                    editCount.setText("0");
+                }
+                currentAmount = Integer.parseInt(editCount.getText().toString());
+                if (!(currentAmount <= 1)) {
+                    editCount.setText(String.valueOf(currentAmount - 1));
+                }
+                break;
+            case R.id.itemActReviewBut:
+                Intent intent = new Intent(ItemActivity.this, ReviewActivity.class);
+                intent.putExtra("item", item);
+                intent.putExtra("userid", userId);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    @Override
+    public void processFinish(String description) {
+        itemDesc.setText(description);
+    }
+}

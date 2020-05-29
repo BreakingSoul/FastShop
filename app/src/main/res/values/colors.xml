@@ -10,4 +10,10 @@
     <color name="colorAppBG">#FAFDF7</color>
     <color name="colorLightGreen">#B8FF70</color>
     <color name="colorReviewAmount">#FBB002</color>
+    <color name="colorReviewButton">#FFD063</color>
+    <color name="colorReviewButtonBorder">#B88102</color>
+    <color name="colorFavorite">#FF4DBE</color>
+    <color name="colorFavoriteHeart">#C13B90</color>
+    <color name="colorButtonCounter">#C6C5C6</color>
+    <color name="colorButtonCounterBorder">#9A9A9A</color>
 </resources>

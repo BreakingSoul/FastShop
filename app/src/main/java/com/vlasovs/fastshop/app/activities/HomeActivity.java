@@ -17,38 +17,48 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.vlasovs.fastshop.R;
 import com.vlasovs.fastshop.app.adapters.MiniItemAdapter;
-import com.vlasovs.fastshop.app.background.MiniItemResponse;
+import com.vlasovs.fastshop.app.adapters.OnItemCardClickListener;
+import com.vlasovs.fastshop.app.background.ItemResponse;
 import com.vlasovs.fastshop.app.background.MiniItemsTask;
-import com.vlasovs.fastshop.app.classes.MiniItem;
+import com.vlasovs.fastshop.app.classes.Item;
 import com.vlasovs.fastshop.app.classes.User;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity implements MiniItemResponse, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements ItemResponse,
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnItemCardClickListener {
 
     private TextView loggedUserTW;
     private Button butReg, butLog, butSignOut;
     private DrawerLayout drawer;
-    private User user;
+    private Menu drawerMenu;
+    private NavigationView navigationView;
+    private View headerView;
+    private TextView headerTitle;
+    private Button headerButton;
+    private LinearLayout regLogButtonLayout;
     private RecyclerView recyclerView, recyclerViewBottom;
-    private ArrayList<MiniItem> miniItems, miniItemsBottom;
+    private ArrayList<Item> miniItems, miniItemsBottom;
     private MiniItemAdapter miniItemAdapter, miniItemAdapterBottom;
     private CardView laptopCat, monitorCat, phoneCat, tabletCat, watchCat, accessoryCat;
     private int refreshCounter = 0;
     private int recieveCounter = 0;
+    private boolean isClickedBottomRecycler;
 
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String SAVED_USER_ID = "id";
+
+    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +72,17 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
         butLog = findViewById(R.id.butLog);
         butSignOut = findViewById(R.id.butSignOut);
         loggedUserTW = findViewById(R.id.textUser);
+        regLogButtonLayout = findViewById(R.id.regButtonsLayout);
+
         drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_drawer);
+        headerView = navigationView.getHeaderView(0);
+        headerTitle = headerView.findViewById(R.id.user_name_drawer);
+        headerButton = headerView.findViewById(R.id.log_in_drawer);
+
         recyclerView = findViewById(R.id.recycler_view_mini_items);
         recyclerViewBottom = findViewById(R.id.recycler_view_mini_items_bottom);
+
         laptopCat = findViewById(R.id.laptopCategory);
         monitorCat = findViewById(R.id.monitorCategory);
         phoneCat = findViewById(R.id.phoneCategory);
@@ -86,8 +104,8 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
 
         miniItems = new ArrayList<>();
         miniItemsBottom = new ArrayList<>();
-        miniItemAdapter = new MiniItemAdapter(HomeActivity.this, miniItems);
-        miniItemAdapterBottom = new MiniItemAdapter(HomeActivity.this, miniItemsBottom);
+        miniItemAdapter = new MiniItemAdapter(HomeActivity.this, miniItems, this);
+        miniItemAdapterBottom = new MiniItemAdapter(HomeActivity.this, miniItemsBottom, this);
 
         addMiniItems();
 
@@ -102,8 +120,18 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        drawerMenu = navigationView.getMenu();
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         butReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openRegistration();
+            }
+        });
+
+        headerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openRegistration();
@@ -151,7 +179,12 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
                     loggedUserTW.setText("Sign in please :D");
                     user.setID(-1);
                     saveUser();
-                    butSignOut.setVisibility(View.GONE);
+       //             butSignOut.setVisibility(View.GONE);
+                    headerButton.setVisibility(View.VISIBLE);
+                    drawerMenu.findItem(R.id.nav_log_out).setVisible(false);
+                    regLogButtonLayout.setVisibility(View.VISIBLE);
+                    butReg.setVisibility(View.VISIBLE);
+                    butLog.setVisibility(View.VISIBLE);
             }
         });
 
@@ -172,19 +205,26 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
         editor.putInt(SAVED_USER_ID, user.getID());
 
         editor.apply();
-
     }
 
     private void loadUser() {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         user = new User(sharedPreferences.getInt(SAVED_USER_ID, -1));
+   //     String title;
 
         if (user.getID() != -1) {
-            butSignOut.setVisibility(View.VISIBLE);
-            loggedUserTW.setText("Logged in user: " + user.getID());
+     //       butSignOut.setVisibility(View.VISIBLE);
+            drawerMenu.findItem(R.id.nav_log_out).setVisible(true);
+     //       loggedUserTW.setText("Logged in user: " + user.getID());
+            headerButton.setVisibility(View.GONE);
+            regLogButtonLayout.setVisibility(View.GONE);
+            butReg.setVisibility(View.GONE);
+            butLog.setVisibility(View.GONE);
         } else {
-            butSignOut.setVisibility(View.GONE);
+   //         butSignOut.setVisibility(View.GONE);
+            headerButton.setVisibility(View.VISIBLE);
+
         }
 
     }
@@ -197,8 +237,13 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
             if (resultCode == RESULT_OK){
                 int userID = data.getIntExtra("fetchedID", 0);
                 user = new User(userID);
-                loggedUserTW.setText("Logged in user: " + user.getID());
-                butSignOut.setVisibility(View.VISIBLE);
+    //            loggedUserTW.setText("Logged in user: " + user.getID());
+    //            butSignOut.setVisibility(View.VISIBLE);
+                drawerMenu.findItem(R.id.nav_log_out).setVisible(true);
+                butReg.setVisibility(View.GONE);
+                butLog.setVisibility(View.GONE);
+                regLogButtonLayout.setVisibility(View.GONE);
+                headerButton.setVisibility(View.GONE);
             }
         }
     }
@@ -236,12 +281,16 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_log_out:
+                openConfirmDialog();
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
-    public void processFinish(ArrayList<MiniItem> itemList) {
+    public void processFinish(ArrayList<Item> itemList) {
 
         if (recieveCounter == 0) {
             miniItems.addAll(itemList);
@@ -252,40 +301,58 @@ public class HomeActivity extends AppCompatActivity implements MiniItemResponse,
             miniItemAdapterBottom.notifyDataSetChanged();
             recieveCounter = 0;
         }
+
     }
 
     @Override
     public void onClick(View view) {
         //for buttons set separately sorry, here only categories
+        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+        intent.putExtra("infoType", "category");
+        intent.putExtra("accountid", user.getID());
+
+        String category = null;
+
         switch (view.getId()){
             case R.id.laptopCategory:
-                Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+                category = "Laptop";
                 break;
             case R.id.monitorCategory:
-                Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+                category = "Monitor";
                 break;
             case R.id.phoneCategory:
-                Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
+                category = "Phone";
                 break;
             case R.id.tabletCategory:
-                Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
+                category = "Tablet";
                 break;
             case R.id.watchCategory:
-                Toast.makeText(this, "5", Toast.LENGTH_SHORT).show();
+                category = "Watch";
                 break;
             case R.id.accessoryCategory:
-                Toast.makeText(this, "6", Toast.LENGTH_SHORT).show();
+                category = "Accessory";
+                break;
+            case R.id.recycler_view_mini_items:
+                isClickedBottomRecycler = false;
+                break;
+            case R.id.recycler_view_mini_items_bottom:
+                isClickedBottomRecycler = true;
                 break;
         }
+        intent.putExtra("infoName", "" + category);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCardClick(int position) {
+        Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
+        if (isClickedBottomRecycler) {
+            intent.putExtra("item", miniItemsBottom.get(position));
+        } else {
+            intent.putExtra("item", miniItems.get(position));
+        }
+        startActivity(intent);
     }
 }
-
-    //    private void addItems() {
-//        miniItems.add(new MiniItem(R.mipmap.ic_launcher, "iPhone 5", 3.5f, 100, 129));
-//        miniItems.add(new MiniItem(R.mipmap.ic_launcher, "iPhone 6", 4.3f, 228.34f, 49));
-//        miniItems.add(new MiniItem(R.mipmap.ic_launcher, "iPhone 7", 4.2f, 149.99f, 166));
-//        miniItems.add(new MiniItem(R.mipmap.ic_launcher, "iPhone 8", 5.0f, 780, 12));
-//        miniItems.add(new MiniItem(R.mipmap.ic_launcher, "iPhone X", 3.7f, 90, 16));
-//    }
 
 

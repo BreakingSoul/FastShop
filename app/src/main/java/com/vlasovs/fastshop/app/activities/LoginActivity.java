@@ -110,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements LoginResponse {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt(SAVED_USER_ID, -1);
+   //     editor.putString("username", "Welcome!");
 
         editor.apply();
 
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoginResponse {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt(SAVED_USER_ID, id);
+  //      editor.putString("username", "")
 
         editor.apply();
 

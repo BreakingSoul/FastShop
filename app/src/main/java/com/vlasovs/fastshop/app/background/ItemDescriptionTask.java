@@ -13,25 +13,25 @@ import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.Request;
 
-import static okhttp3.RequestBody.*;
+import static okhttp3.RequestBody.create;
 
-public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
+public class ItemDescriptionTask extends AsyncTask <Integer, Void, String> {
 
-        private ArrayList<Item> itemList = new ArrayList<>();
-        public ItemResponse delegate = null;
+        String description;
+        public ItemDescriptionResponse delegate = null;
 
         @Override
-        protected ArrayList<Item> doInBackground(Integer... integers) {
+        protected String doInBackground(Integer... integers) {
 
             MediaType JSON = MediaType.get("application/json; charset=utf-8");
             JSONObject idForQuery = new JSONObject();
 
             try{
-                idForQuery.put("id", String.valueOf(integers[0]));
+                idForQuery.put("itemid", String.valueOf(integers[0]));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -39,7 +39,7 @@ public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = create(JSON, idForQuery.toString());
             Request request = new Request.Builder()
-                    .url("http://192.168.1.43/getminiitems.php")
+                    .url("http://192.168.1.43/itemdescription.php")
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .post(body)
@@ -53,10 +53,7 @@ public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    Item item = new Item(object.getInt("ItemID") ,object.getString("Image"), object.getString("Name"), (float) object.getDouble("Rating"),
-                            (float) object.getDouble("Price"), object.getInt("Reviews"));
-
-                    itemList.add(item);
+                    description = object.getString("Description");
                 }
 
             } catch (IOException e) {
@@ -64,11 +61,11 @@ public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
             } catch (JSONException e) {
                 System.out.println("End of content");
             }
-            return itemList;
+            return description;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Item> arraylist) {
-            delegate.processFinish(arraylist);
+        protected void onPostExecute(String description) {
+            delegate.processFinish(description);
         }
     }

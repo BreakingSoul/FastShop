@@ -1,6 +1,9 @@
 package com.vlasovs.fastshop.app.classes;
 
-public class MiniItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Item implements Parcelable {
 
     private int id;
     private String pictureURL;
@@ -9,7 +12,7 @@ public class MiniItem {
     private float price;
     private int reviews;
 
-    public MiniItem(int id, String pictureURL, String name, float rating, float price, int reviews) {
+    public Item(int id, String pictureURL, String name, float rating, float price, int reviews) {
         this.id = id;
         this.pictureURL = pictureURL;
         this.name = name;
@@ -17,6 +20,27 @@ public class MiniItem {
         this.price = price;
         this.reviews = reviews;
     }
+
+    protected Item(Parcel in) {
+        id = in.readInt();
+        pictureURL = in.readString();
+        name = in.readString();
+        rating = in.readFloat();
+        price = in.readFloat();
+        reviews = in.readInt();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -64,5 +88,20 @@ public class MiniItem {
 
     public void setReviews(int reviews) {
         this.reviews = reviews;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(pictureURL);
+        parcel.writeString(name);
+        parcel.writeFloat(rating);
+        parcel.writeFloat(price);
+        parcel.writeInt(reviews);
     }
 }

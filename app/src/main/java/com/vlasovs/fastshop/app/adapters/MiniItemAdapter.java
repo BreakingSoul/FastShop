@@ -1,6 +1,7 @@
 package com.vlasovs.fastshop.app.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.vlasovs.fastshop.R;
-import com.vlasovs.fastshop.app.classes.MiniItem;
+import com.vlasovs.fastshop.app.activities.HomeActivity;
+import com.vlasovs.fastshop.app.activities.ItemActivity;
+import com.vlasovs.fastshop.app.classes.Item;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHolder> {
 
-    ArrayList<MiniItem> miniItems;
-    Context context;
+    private ArrayList<Item> miniItems;
+    private Context context;
+    private OnItemCardClickListener cardListener;
 
-    public MiniItemAdapter(Context context, ArrayList<MiniItem> miniItems) {
+    public MiniItemAdapter(Context context, ArrayList<Item> miniItems, OnItemCardClickListener cardListener) {
         this.miniItems = miniItems;
         this.context = context;
+        this.cardListener = cardListener;
     }
 
     @NonNull
@@ -37,13 +42,24 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MiniItemAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MiniItemAdapter.ViewHolder holder, final int position) {
      //   holder.imageView.setImageResource(miniItems.get(position).getPicture());
         holder.textReviews.setText("(" + String.format(Locale.getDefault(), "%d", miniItems.get(position).getReviews()) + ")");
         holder.textPrice.setText(String.format(Locale.getDefault(), "%.2f", miniItems.get(position).getPrice())+"€");
         holder.ratingBar.setRating(miniItems.get(position).getRating());
         holder.textName.setText(miniItems.get(position).getName());
         Glide.with(context).load(miniItems.get(position).getPictureURL()).into(holder.imageView);
+
+        holder.miniItemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ItemActivity.class);
+                intent.putExtra("item", miniItems.get(position));
+                intent.putExtra("userid", HomeActivity.user.getID());
+                //           Toast.makeText(context, searchItems.get(position) + "", Toast.LENGTH_LONG).show();
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -62,12 +78,20 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
+
             miniItemCard = itemView.findViewById(R.id.mini_item_card);
             imageView = itemView.findViewById(R.id.mini_item_picture);
             textName = itemView.findViewById(R.id.mini_item_name);
             ratingBar = itemView.findViewById(R.id.mini_item_rating);
             textPrice = itemView.findViewById(R.id.mini_item_price);
             textReviews = itemView.findViewById(R.id.mini_item_review_amount);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cardListener.onCardClick(getAdapterPosition());
+                }
+            });
         }
     }
 }

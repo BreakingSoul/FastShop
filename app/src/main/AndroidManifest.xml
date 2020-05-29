@@ -3,47 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vlasovs.fastshop">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config">
-
-        <activity android:name=".app.activities.LoginActivity"
-
+        android:theme="@style/AppTheme">
+        <activity android:name=".app.activities.CartActivity"></activity>
+        <activity
+            android:name=".app.activities.ReviewActivity"
             android:alwaysRetainTaskState="true"
             android:exported="true"
+            android:parentActivityName=".app.activities.ItemActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".app.activities.HomeActivity"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
-
-        <activity android:name=".app.activities.RegistrationActivity"
-
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".app.activities.ItemActivity"
             android:alwaysRetainTaskState="true"
-            android:screenOrientation="portrait"
             android:exported="true"
             android:parentActivityName=".app.activities.HomeActivity"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
-
-        <activity android:name=".app.activities.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".app.activities.SearchActivity"
             android:alwaysRetainTaskState="true"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName=".app.activities.HomeActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".app.activities.LoginActivity"
+            android:alwaysRetainTaskState="true"
+            android:exported="true"
+            android:parentActivityName=".app.activities.HomeActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".app.activities.RegistrationActivity"
+            android:alwaysRetainTaskState="true"
+            android:exported="true"
+            android:parentActivityName=".app.activities.HomeActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".app.activities.HomeActivity"
+            android:alwaysRetainTaskState="true"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

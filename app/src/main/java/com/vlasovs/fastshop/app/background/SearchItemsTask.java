@@ -13,25 +13,33 @@ import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.Request;
 
-import static okhttp3.RequestBody.*;
+import static okhttp3.RequestBody.create;
 
-public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
+public class SearchItemsTask extends AsyncTask <String, Void, ArrayList<Item>> {
 
         private ArrayList<Item> itemList = new ArrayList<>();
         public ItemResponse delegate = null;
 
         @Override
-        protected ArrayList<Item> doInBackground(Integer... integers) {
+        protected ArrayList<Item> doInBackground(String... params) {
 
             MediaType JSON = MediaType.get("application/json; charset=utf-8");
             JSONObject idForQuery = new JSONObject();
 
+            int type;
+            if (params[0].equals("category")){
+                type = 1;
+            } else {
+                type = 0;
+            }
+
             try{
-                idForQuery.put("id", String.valueOf(integers[0]));
+                idForQuery.put("iscategory", String.valueOf(type));
+                idForQuery.put("searchitem", params[1]);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -39,7 +47,7 @@ public class MiniItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = create(JSON, idForQuery.toString());
             Request request = new Request.Builder()
-                    .url("http://192.168.1.43/getminiitems.php")
+                    .url("http://192.168.1.43/search.php")
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .post(body)
