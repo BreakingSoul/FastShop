@@ -16,4 +16,6 @@
     <color name="colorFavoriteHeart">#C13B90</color>
     <color name="colorButtonCounter">#C6C5C6</color>
     <color name="colorButtonCounterBorder">#9A9A9A</color>
+    <color name="colorButtonRemove">#F44336</color>
+    <color name="colorButtonRemoveBorder">#A32D24</color>
 </resources>

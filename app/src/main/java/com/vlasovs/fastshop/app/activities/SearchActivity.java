@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.vlasovs.fastshop.R;
-import com.vlasovs.fastshop.app.adapters.OnItemCardClickListener;
 import com.vlasovs.fastshop.app.adapters.SearchItemAdapter;
 import com.vlasovs.fastshop.app.background.ItemResponse;
 import com.vlasovs.fastshop.app.background.SearchItemsTask;
@@ -19,7 +17,7 @@ import com.vlasovs.fastshop.app.classes.Item;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity implements ItemResponse, OnItemCardClickListener {
+public class SearchActivity extends AppCompatActivity implements ItemResponse {
 
     private RecyclerView searchRecyclerView;
     private ArrayList<Item> foundItems;
@@ -44,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements ItemResponse, O
         searchRecyclerView = findViewById(R.id.search_recycler);
         twFoundAmount = findViewById(R.id.textViewFoundAmount);
 
-        searchAdapter = new SearchItemAdapter(SearchActivity.this, foundItems, this);
+        searchAdapter = new SearchItemAdapter(SearchActivity.this, foundItems);
 
         manager = new LinearLayoutManager(this);
         searchRecyclerView.setLayoutManager(manager);
@@ -55,7 +53,6 @@ public class SearchActivity extends AppCompatActivity implements ItemResponse, O
         searchRecyclerView.addItemDecoration(dividerItemDecoration);
 
         addFoundItems();
-     //   Toast.makeText(this, "" + searchType + " + " + searchName, Toast.LENGTH_LONG).show();
 
     }
 
@@ -76,13 +73,5 @@ public class SearchActivity extends AppCompatActivity implements ItemResponse, O
     public boolean onSupportNavigateUp() {
         finish();
         return true;
-    }
-
-    @Override
-    public void onCardClick(int position) {
-        Intent intent = new Intent(SearchActivity.this, ItemActivity.class);
-        intent.putExtra("item", foundItems.get(position));
-        Toast.makeText(this, foundItems.get(position) + "", Toast.LENGTH_LONG).show();
-        startActivity(intent);
     }
 }

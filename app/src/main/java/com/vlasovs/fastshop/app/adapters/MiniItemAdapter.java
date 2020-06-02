@@ -26,12 +26,10 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
 
     private ArrayList<Item> miniItems;
     private Context context;
-    private OnItemCardClickListener cardListener;
 
-    public MiniItemAdapter(Context context, ArrayList<Item> miniItems, OnItemCardClickListener cardListener) {
+    public MiniItemAdapter(Context context, ArrayList<Item> miniItems) {
         this.miniItems = miniItems;
         this.context = context;
-        this.cardListener = cardListener;
     }
 
     @NonNull
@@ -43,7 +41,7 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MiniItemAdapter.ViewHolder holder, final int position) {
-     //   holder.imageView.setImageResource(miniItems.get(position).getPicture());
+
         holder.textReviews.setText("(" + String.format(Locale.getDefault(), "%d", miniItems.get(position).getReviews()) + ")");
         holder.textPrice.setText(String.format(Locale.getDefault(), "%.2f", miniItems.get(position).getPrice())+"€");
         holder.ratingBar.setRating(miniItems.get(position).getRating());
@@ -56,7 +54,6 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
                 Intent intent = new Intent(context, ItemActivity.class);
                 intent.putExtra("item", miniItems.get(position));
                 intent.putExtra("userid", HomeActivity.user.getID());
-                //           Toast.makeText(context, searchItems.get(position) + "", Toast.LENGTH_LONG).show();
                 context.startActivity(intent);
             }
         });
@@ -86,12 +83,6 @@ public class MiniItemAdapter extends RecyclerView.Adapter<MiniItemAdapter.ViewHo
             textPrice = itemView.findViewById(R.id.mini_item_price);
             textReviews = itemView.findViewById(R.id.mini_item_review_amount);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    cardListener.onCardClick(getAdapterPosition());
-                }
-            });
         }
     }
 }

@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.vlasovs.fastshop.R;
 import com.vlasovs.fastshop.app.adapters.MiniItemAdapter;
-import com.vlasovs.fastshop.app.adapters.OnItemCardClickListener;
 import com.vlasovs.fastshop.app.background.ItemResponse;
 import com.vlasovs.fastshop.app.background.MiniItemsTask;
 import com.vlasovs.fastshop.app.classes.Item;
@@ -36,24 +35,22 @@ import com.vlasovs.fastshop.app.classes.User;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements ItemResponse,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnItemCardClickListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private TextView loggedUserTW;
-    private Button butReg, butLog, butSignOut;
+    private Button butReg, butLog, headerButton;
     private DrawerLayout drawer;
     private Menu drawerMenu;
     private NavigationView navigationView;
     private View headerView;
     private TextView headerTitle;
-    private Button headerButton;
     private LinearLayout regLogButtonLayout;
     private RecyclerView recyclerView, recyclerViewBottom;
     private ArrayList<Item> miniItems, miniItemsBottom;
     private MiniItemAdapter miniItemAdapter, miniItemAdapterBottom;
     private CardView laptopCat, monitorCat, phoneCat, tabletCat, watchCat, accessoryCat;
     private int refreshCounter = 0;
-    private int recieveCounter = 0;
-    private boolean isClickedBottomRecycler;
+    private int receiveCounter = 0;
+ //   private boolean isClickedBottomRecycler;
 
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String SAVED_USER_ID = "id";
@@ -65,13 +62,39 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
+        initializeViews();
+
+        butReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openRegistration();
+            }
+        });
+
+        headerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLogIn();
+            }
+        });
+
+        butLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLogIn();
+            }
+        });
+
+        loadUser();
+
+    }
+
+    private void initializeViews(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         butReg = findViewById(R.id.butReg);
         butLog = findViewById(R.id.butLog);
-        butSignOut = findViewById(R.id.butSignOut);
-        loggedUserTW = findViewById(R.id.textUser);
         regLogButtonLayout = findViewById(R.id.regButtonsLayout);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -104,8 +127,8 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
 
         miniItems = new ArrayList<>();
         miniItemsBottom = new ArrayList<>();
-        miniItemAdapter = new MiniItemAdapter(HomeActivity.this, miniItems, this);
-        miniItemAdapterBottom = new MiniItemAdapter(HomeActivity.this, miniItemsBottom, this);
+        miniItemAdapter = new MiniItemAdapter(HomeActivity.this, miniItems);
+        miniItemAdapterBottom = new MiniItemAdapter(HomeActivity.this, miniItemsBottom);
 
         addMiniItems();
 
@@ -123,37 +146,6 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         drawerMenu = navigationView.getMenu();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        butReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openRegistration();
-            }
-        });
-
-        headerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openRegistration();
-            }
-        });
-
-        butLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLogIn();
-            }
-        });
-
-        butSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openConfirmDialog();
-            }
-        });
-
-        loadUser();
-
     }
 
     private void addMiniItems(){
@@ -176,15 +168,9 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                    loggedUserTW.setText("Sign in please :D");
                     user.setID(-1);
                     saveUser();
-       //             butSignOut.setVisibility(View.GONE);
-                    headerButton.setVisibility(View.VISIBLE);
-                    drawerMenu.findItem(R.id.nav_log_out).setVisible(false);
-                    regLogButtonLayout.setVisibility(View.VISIBLE);
-                    butReg.setVisibility(View.VISIBLE);
-                    butLog.setVisibility(View.VISIBLE);
+                    showNotLoggedUserViews();
             }
         });
 
@@ -214,19 +200,24 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
    //     String title;
 
         if (user.getID() != -1) {
-     //       butSignOut.setVisibility(View.VISIBLE);
-            drawerMenu.findItem(R.id.nav_log_out).setVisible(true);
-     //       loggedUserTW.setText("Logged in user: " + user.getID());
-            headerButton.setVisibility(View.GONE);
-            regLogButtonLayout.setVisibility(View.GONE);
-            butReg.setVisibility(View.GONE);
-            butLog.setVisibility(View.GONE);
+            showLoggedUserViews();
         } else {
-   //         butSignOut.setVisibility(View.GONE);
             headerButton.setVisibility(View.VISIBLE);
-
+            drawerMenu.findItem(R.id.nav_log_out).setVisible(false);
         }
 
+    }
+
+    private void showLoggedUserViews(){
+        drawerMenu.findItem(R.id.nav_log_out).setVisible(true);
+        regLogButtonLayout.setVisibility(View.GONE);
+        headerButton.setVisibility(View.GONE);
+    }
+
+    private void showNotLoggedUserViews(){
+        headerButton.setVisibility(View.VISIBLE);
+        drawerMenu.findItem(R.id.nav_log_out).setVisible(false);
+        regLogButtonLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -237,13 +228,7 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
             if (resultCode == RESULT_OK){
                 int userID = data.getIntExtra("fetchedID", 0);
                 user = new User(userID);
-    //            loggedUserTW.setText("Logged in user: " + user.getID());
-    //            butSignOut.setVisibility(View.VISIBLE);
-                drawerMenu.findItem(R.id.nav_log_out).setVisible(true);
-                butReg.setVisibility(View.GONE);
-                butLog.setVisibility(View.GONE);
-                regLogButtonLayout.setVisibility(View.GONE);
-                headerButton.setVisibility(View.GONE);
+                showLoggedUserViews();
             }
         }
     }
@@ -281,25 +266,40 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_log_out:
-                openConfirmDialog();
-        }
         drawer.closeDrawer(GravityCompat.START);
+        switch (item.getItemId()){
+            case R.id.nav_shop_cart:
+                if (user.getID() != -1) {
+                    openCartActivity();
+                } else {
+                    openLogIn();
+                }
+                break;
+            case R.id.nav_log_out:
+                drawerMenu.getItem(3).setChecked(false);
+                openConfirmDialog();
+                break;
+        }
         return true;
+    }
+
+    private void openCartActivity() {
+        Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+        intent.putExtra("userid", user.getID());
+        startActivity(intent);
     }
 
     @Override
     public void processFinish(ArrayList<Item> itemList) {
 
-        if (recieveCounter == 0) {
+        if (receiveCounter == 0) {
             miniItems.addAll(itemList);
             miniItemAdapter.notifyDataSetChanged();
-            recieveCounter++;
+            receiveCounter++;
         } else {
             miniItemsBottom.addAll(itemList);
             miniItemAdapterBottom.notifyDataSetChanged();
-            recieveCounter = 0;
+            receiveCounter = 0;
         }
 
     }
@@ -332,25 +332,14 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
             case R.id.accessoryCategory:
                 category = "Accessory";
                 break;
-            case R.id.recycler_view_mini_items:
+ /*           case R.id.recycler_view_mini_items:
                 isClickedBottomRecycler = false;
                 break;
             case R.id.recycler_view_mini_items_bottom:
                 isClickedBottomRecycler = true;
-                break;
+                break;*/
         }
         intent.putExtra("infoName", "" + category);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onCardClick(int position) {
-        Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
-        if (isClickedBottomRecycler) {
-            intent.putExtra("item", miniItemsBottom.get(position));
-        } else {
-            intent.putExtra("item", miniItems.get(position));
-        }
         startActivity(intent);
     }
 }

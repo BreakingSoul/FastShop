@@ -10,7 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".app.activities.CartActivity"></activity>
+        <activity
+            android:name=".app.activities.CartActivity"
+            android:alwaysRetainTaskState="true"
+            android:exported="true"
+            android:parentActivityName=".app.activities.HomeActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".app.activities.ReviewActivity"
             android:alwaysRetainTaskState="true"

@@ -27,24 +27,22 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
 
     private ArrayList<Item> searchItems;
     private Context context;
-    private OnItemCardClickListener cardListener;
 
-    public SearchItemAdapter(Context context, ArrayList<Item> searchItems, OnItemCardClickListener cardListener) {
+    public SearchItemAdapter(Context context, ArrayList<Item> searchItems) {
         this.searchItems = searchItems;
         this.context = context;
-        this.cardListener = cardListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent, false);
-        return new ViewHolder(view, cardListener);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchItemAdapter.ViewHolder holder, final int position) {
-     //   holder.imageView.setImageResource(miniItems.get(position).getPicture());
+
         holder.textReviews.setText("Reviews: " + String.format(Locale.getDefault(), "%d", searchItems.get(position).getReviews()));
         holder.textPrice.setText(String.format(Locale.getDefault(), "%.2f", searchItems.get(position).getPrice())+"€");
         holder.ratingBar.setRating(searchItems.get(position).getRating());
@@ -57,7 +55,6 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
                 Intent intent = new Intent(context, ItemActivity.class);
                 intent.putExtra("item", searchItems.get(position));
                 intent.putExtra("userid", SearchActivity.userID);
-     //           Toast.makeText(context, searchItems.get(position) + "", Toast.LENGTH_LONG).show();
                 context.startActivity(intent);
             }
         });
@@ -68,7 +65,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
         return searchItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView searchItemCard;
         ImageView imageView;
@@ -76,9 +73,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
         RatingBar ratingBar;
         TextView textPrice;
         TextView textReviews;
-        OnItemCardClickListener clickListener;
 
-        public ViewHolder(@NonNull View itemView, OnItemCardClickListener clickListener){
+        public ViewHolder(@NonNull View itemView){
             super(itemView);
 
             searchItemCard = itemView.findViewById(R.id.searchItemCard);
@@ -87,22 +83,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
             ratingBar = itemView.findViewById(R.id.searchItemRating);
             textPrice = itemView.findViewById(R.id.searchItemPrice);
             textReviews = itemView.findViewById(R.id.searchItemReviews);
-            this.clickListener = clickListener;
 
-            itemView.setOnClickListener(this);
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    cardListener.onCardClick(getAdapterPosition());
-//                }
-//            });
-        }
-
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(context, "Hello", Toast.LENGTH_LONG).show();
-            clickListener.onCardClick(getAdapterPosition());
         }
     }
 }
