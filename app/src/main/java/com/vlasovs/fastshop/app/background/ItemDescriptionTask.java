@@ -66,6 +66,6 @@ public class ItemDescriptionTask extends AsyncTask <Integer, Void, String> {
 
         @Override
         protected void onPostExecute(String description) {
-            delegate.processFinish(description);
+            delegate.processDescriptionFinish(description);
         }
     }

@@ -268,6 +268,7 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawer.closeDrawer(GravityCompat.START);
         switch (item.getItemId()){
+
             case R.id.nav_shop_cart:
                 if (user.getID() != -1) {
                     openCartActivity();
@@ -275,12 +276,26 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
                     openLogIn();
                 }
                 break;
+
+            case R.id.nav_wish_list:
+                if (user.getID() != -1) {
+                    openWishActivity();
+                } else {
+                    openLogIn();
+                }
+                break;
+
             case R.id.nav_log_out:
-                drawerMenu.getItem(3).setChecked(false);
                 openConfirmDialog();
                 break;
         }
         return true;
+    }
+
+    private void openWishActivity() {
+        Intent intent = new Intent(HomeActivity.this, WishActivity.class);
+        intent.putExtra("userid", user.getID());
+        startActivity(intent);
     }
 
     private void openCartActivity() {

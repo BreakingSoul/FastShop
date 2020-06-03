@@ -25,7 +25,7 @@ public class SearchActivity extends AppCompatActivity implements ItemResponse {
     private RecyclerView.LayoutManager manager;
     private TextView twFoundAmount;
     private String searchType, searchName;
-    public static int userID;
+    private int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements ItemResponse {
         searchRecyclerView = findViewById(R.id.search_recycler);
         twFoundAmount = findViewById(R.id.textViewFoundAmount);
 
-        searchAdapter = new SearchItemAdapter(SearchActivity.this, foundItems);
+        searchAdapter = new SearchItemAdapter(SearchActivity.this, foundItems, userID);
 
         manager = new LinearLayoutManager(this);
         searchRecyclerView.setLayoutManager(manager);

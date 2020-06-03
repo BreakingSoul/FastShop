@@ -17,21 +17,19 @@ import okhttp3.Response;
 
 import static okhttp3.RequestBody.create;
 
-public class AddCartItemTask extends AsyncTask <CartItem, Void, Void> {
+public class RemoveWishItemTask extends AsyncTask <Integer, Void, Void> {
 
-    public OnListChangeResponse delegate;
+    public OnListChangeResponse delegate = null;
 
         @Override
-        protected Void doInBackground(CartItem... items) {
+        protected Void doInBackground(Integer... integers) {
 
             MediaType JSON = MediaType.get("application/json; charset=utf-8");
             JSONObject idForQuery = new JSONObject();
 
             try{
-                idForQuery.put("itemid", String.valueOf(items[0].getId()));
-                idForQuery.put("userid", String.valueOf(items[0].getClientId()));
-                idForQuery.put("amount", String.valueOf(items[0].getAmount()));
-                idForQuery.put("price", String.valueOf(items[0].getPrice()));
+                idForQuery.put("itemid", String.valueOf(integers[0]));
+                idForQuery.put("userid", String.valueOf(integers[1]));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -39,7 +37,7 @@ public class AddCartItemTask extends AsyncTask <CartItem, Void, Void> {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = create(JSON, idForQuery.toString());
             Request request = new Request.Builder()
-                    .url("http://192.168.1.43/addcartitem.php")
+                    .url("http://192.168.1.43/removewishitem.php")
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .post(body)

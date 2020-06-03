@@ -16,18 +16,22 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.vlasovs.fastshop.R;
-import com.vlasovs.fastshop.app.background.AddCartItemResponse;
+import com.vlasovs.fastshop.app.background.AddWishItemTask;
+import com.vlasovs.fastshop.app.background.ItemResponse;
+import com.vlasovs.fastshop.app.background.OnListChangeResponse;
 import com.vlasovs.fastshop.app.background.AddCartItemTask;
 import com.vlasovs.fastshop.app.background.ItemDescriptionResponse;
 import com.vlasovs.fastshop.app.background.ItemDescriptionTask;
+import com.vlasovs.fastshop.app.background.OnWishListAddedResponse;
 import com.vlasovs.fastshop.app.classes.CartItem;
 import com.vlasovs.fastshop.app.classes.Item;
 import com.vlasovs.fastshop.app.classes.LoadingDialog;
-import com.vlasovs.fastshop.app.classes.PurchaseDialog;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
-public class ItemActivity extends AppCompatActivity implements View.OnClickListener, ItemDescriptionResponse, AddCartItemResponse {
+public class ItemActivity extends AppCompatActivity implements View.OnClickListener, ItemDescriptionResponse,
+                                                                OnListChangeResponse, OnWishListAddedResponse {
 
     private Item item;
     private ImageView image;
@@ -129,13 +133,21 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         int currentAmount;
         Intent intent;
         switch (view.getId()){
+
             case R.id.itemActFavBut:
+                if(userId != -1) {
+                    AddWishItemTask aWIT = new AddWishItemTask();
+                    aWIT.delegate = this;
+                    lD = new LoadingDialog(this);
+                    lD.startLoadingDialog();
+                    aWIT.execute(userId, item.getId());
+                } else {
+                    intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
+
             case R.id.itemActCartBut:
-         //       pD = new PurchaseDialog(this);
-         //       pD.startPurchaseDialog();
-
-
                 if(userId != -1) {
                     CartItem cartItem = new CartItem(item.getId(), userId, item.getPictureURL(), item.getName(),
                             Float.parseFloat(editCount.getText().toString()) * item.getPrice(),
@@ -151,6 +163,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(intent);
                 }
                 break;
+
             case R.id.buttonCounterInc:
                 if (editCount.getText().toString().equals("")){
                 editCount.setText("0");
@@ -159,6 +172,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                     editCount.setText(String.valueOf(currentAmount));
                 }
                 break;
+
             case R.id.buttonCounterDec:
                 if (editCount.getText().toString().equals("")){
                     editCount.setText("0");
@@ -168,6 +182,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                     editCount.setText(String.valueOf(currentAmount - 1));
                 }
                 break;
+
             case R.id.itemActReviewBut:
                 intent = new Intent(ItemActivity.this, ReviewActivity.class);
                 intent.putExtra("item", item);
@@ -178,15 +193,21 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void processFinish(String description) {
+    public void processDescriptionFinish(String description) {
         itemDesc.setText(description);
     }
 
     @Override
-    public void itemAdded() {
+    public void listRefresh() {
         lD.dismissLoadingDialog();
         Intent intent = new Intent(this, CartActivity.class);
         intent.putExtra("userid", userId);
         startActivity(intent);
+    }
+
+    @Override
+    public void wishItemAdded() {
+        lD.dismissLoadingDialog();
+        Toast.makeText(this, "Item added to wish list", Toast.LENGTH_LONG).show();
     }
 }

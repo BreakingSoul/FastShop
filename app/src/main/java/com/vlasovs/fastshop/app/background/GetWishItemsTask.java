@@ -2,12 +2,14 @@ package com.vlasovs.fastshop.app.background;
 
 import android.os.AsyncTask;
 
-import com.vlasovs.fastshop.app.classes.CartItem;
+import com.vlasovs.fastshop.app.classes.Item;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -17,21 +19,19 @@ import okhttp3.Response;
 
 import static okhttp3.RequestBody.create;
 
-public class AddCartItemTask extends AsyncTask <CartItem, Void, Void> {
+public class GetWishItemsTask extends AsyncTask <Integer, Void, ArrayList<Item>> {
 
-    public OnListChangeResponse delegate;
+        private ArrayList<Item> itemList = new ArrayList<>();
+        public ItemResponse delegate = null;
 
         @Override
-        protected Void doInBackground(CartItem... items) {
+        protected ArrayList<Item> doInBackground(Integer... integers) {
 
             MediaType JSON = MediaType.get("application/json; charset=utf-8");
             JSONObject idForQuery = new JSONObject();
 
             try{
-                idForQuery.put("itemid", String.valueOf(items[0].getId()));
-                idForQuery.put("userid", String.valueOf(items[0].getClientId()));
-                idForQuery.put("amount", String.valueOf(items[0].getAmount()));
-                idForQuery.put("price", String.valueOf(items[0].getPrice()));
+                idForQuery.put("userid", String.valueOf(integers[0]));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -39,7 +39,7 @@ public class AddCartItemTask extends AsyncTask <CartItem, Void, Void> {
             OkHttpClient client = new OkHttpClient();
             RequestBody body = create(JSON, idForQuery.toString());
             Request request = new Request.Builder()
-                    .url("http://192.168.1.43/addcartitem.php")
+                    .url("http://192.168.1.43/getwishlist.php")
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .post(body)
@@ -47,23 +47,28 @@ public class AddCartItemTask extends AsyncTask <CartItem, Void, Void> {
             try {
                 Response response = client.newCall(request).execute();
 
-           /*     JSONArray array = new JSONArray(response.body().string());
+                JSONArray array = new JSONArray(response.body().string());
 
                 for (int i = 0; i < array.length(); i++){
 
                     JSONObject object = array.getJSONObject(i);
 
-                    description = object.getString("Description");
-                }*/
+                    Item item = new Item(object.getInt("ItemID") ,object.getString("Image"), object.getString("Name"), (float) object.getDouble("Rating"),
+                            (float) object.getDouble("Price"), object.getInt("Reviews"));
+
+                    itemList.add(item);
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+                System.out.println("End of content");
             }
-            return null;
+            return itemList;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            delegate.listRefresh();
+        protected void onPostExecute(ArrayList<Item> arraylist) {
+            delegate.processFinish(arraylist);
         }
     }

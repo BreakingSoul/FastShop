@@ -27,10 +27,12 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
 
     private ArrayList<Item> searchItems;
     private Context context;
+    private int userID;
 
-    public SearchItemAdapter(Context context, ArrayList<Item> searchItems) {
+    public SearchItemAdapter(Context context, ArrayList<Item> searchItems, int userID) {
         this.searchItems = searchItems;
         this.context = context;
+        this.userID = userID;
     }
 
     @NonNull
@@ -54,7 +56,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
             public void onClick(View view) {
                 Intent intent = new Intent(context, ItemActivity.class);
                 intent.putExtra("item", searchItems.get(position));
-                intent.putExtra("userid", SearchActivity.userID);
+                intent.putExtra("userid", userID);
                 context.startActivity(intent);
             }
         });

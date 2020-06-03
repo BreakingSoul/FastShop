@@ -5,4 +5,11 @@
     <string name="navigation_drawer_close">Open navigation drawer</string>
     <string name="picture_desc">Picture of an item</string>
     <string name="featured_products">Featured products</string>
+    <string name="shopcart">Shopping Cart</string>
+    <string name="wishlist">Wish List</string>
+    <string name="reviews">Reviews</string>
+    <string name="iteminfo">Item Information</string>
+    <string name="search">Search</string>
+    <string name="login">Log In</string>
+    <string name="signup">Sign up</string>
 </resources>
