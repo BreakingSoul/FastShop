@@ -269,6 +269,9 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         drawer.closeDrawer(GravityCompat.START);
         switch (item.getItemId()){
 
+            case R.id.nav_categories:
+                openCategories();
+                break;
             case R.id.nav_shop_cart:
                 if (user.getID() != -1) {
                     openCartActivity();
@@ -290,6 +293,12 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
                 break;
         }
         return true;
+    }
+
+    private void openCategories() {
+        Intent intent = new Intent(HomeActivity.this, CategoryActivity.class);
+        intent.putExtra("userid", user.getID());
+        startActivity(intent);
     }
 
     private void openWishActivity() {

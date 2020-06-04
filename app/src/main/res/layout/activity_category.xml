@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorAppBG"
+    tools:context=".app.activities.CategoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAppBG"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:focusable="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catLaptop"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/laptop_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Laptops"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catMonitor"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/monitor_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Monitors"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catPhone"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/mobile_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Phones"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:focusable="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catTablet"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/tablet_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Tablets"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catWatch"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/watch_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Watches"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catHeadphone"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/accessory_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Headphones"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:focusable="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catKeyboard"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/keyboard_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Keyboards"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catSpeaker"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/speaker_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Speakers"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catMicrophone"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/microphone_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Microphones"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:focusable="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catCamera"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/camera_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Cameras"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catTV"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/tv_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="TVs"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catHardDrive"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/harddrive_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Hard Drives"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:focusable="true">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catMouse"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/mouse_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="Mouse Devices"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catPC"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/pc_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="PCs"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/catGaming"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorAppBG">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/console_image">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="Gaming Equipment"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_on_secondary"
+                        android:textSize="16sp">
+                    </TextView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
