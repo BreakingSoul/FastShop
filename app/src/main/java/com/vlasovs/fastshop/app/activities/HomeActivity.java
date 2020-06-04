@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         headerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                drawer.closeDrawer(GravityCompat.START);
                 openLogIn();
             }
         });
@@ -288,11 +289,49 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
                 }
                 break;
 
+            case R.id.nav_support:
+
+                if (user.getID() != -1) {
+                    openSupportActivity();
+                } else {
+                    openSupportDialog();
+                }
+                break;
+
             case R.id.nav_log_out:
                 openConfirmDialog();
                 break;
         }
         return true;
+    }
+
+    private void openSupportDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Customer Service Information");
+        builder.setMessage("You can contact us by calling on number +37122822869 or writing on email support@fastshop.com. If you log in the system we will be able to help you via private chat!");
+
+        builder.setPositiveButton("Log in", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                openLogIn();
+            }
+        });
+
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void openSupportActivity() {
+        Intent intent = new Intent(HomeActivity.this, SupportActivity.class);
+        intent.putExtra("userid", user.getID());
+        startActivity(intent);
     }
 
     private void openCategories() {
