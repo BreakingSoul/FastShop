@@ -7,22 +7,28 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.vlasovs.fastshop.R;
@@ -39,6 +45,8 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
 
     private Button butReg, butLog, headerButton;
     private DrawerLayout drawer;
+    private EditText editSearchItemName;
+    private Button buttonSearchItemName;
     private Menu drawerMenu;
     private NavigationView navigationView;
     private View headerView;
@@ -86,13 +94,30 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
             }
         });
 
-        loadUser();
+        buttonSearchItemName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isValidSearchName()){
+                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                    intent.putExtra("accountid", user.getID());
+                    intent.putExtra("infoType", "itemname");
+                    intent.putExtra("infoName", "" + editSearchItemName.getText().toString().trim());
+                    startActivity(intent);
+                }
+            }
+        });
 
+        editSearchItemName.getBackground().mutate().setColorFilter(ContextCompat.getColor(this, R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+
+        loadUser();
     }
 
     private void initializeViews(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        editSearchItemName = toolbar.findViewById(R.id.editItemName);
+        buttonSearchItemName = toolbar.findViewById(R.id.buttonSearchItemName);
 
         butReg = findViewById(R.id.butReg);
         butLog = findViewById(R.id.butLog);
@@ -367,6 +392,18 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
 
     }
 
+    private boolean isValidSearchName(){
+        String searchedItemName = editSearchItemName.getText().toString().trim();
+
+        if (searchedItemName.isEmpty()){
+            Toast.makeText(this, "This field can't be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     @Override
     public void onClick(View view) {
         //for buttons set separately sorry, here only categories
@@ -405,6 +442,7 @@ public class HomeActivity extends AppCompatActivity implements ItemResponse,
         intent.putExtra("infoName", "" + category);
         startActivity(intent);
     }
+
 }
 
 

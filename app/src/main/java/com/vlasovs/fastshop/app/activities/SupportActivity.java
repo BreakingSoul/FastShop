@@ -62,8 +62,6 @@ public class SupportActivity extends AppCompatActivity implements GetMessagesRes
         });
     }
 
-
-
     private void initializeViews() {
         messageRecycler = findViewById(R.id.recyclerMessages);
         messageInput = findViewById(R.id.messageInput);
@@ -177,7 +175,5 @@ public class SupportActivity extends AppCompatActivity implements GetMessagesRes
         finish();
         return true;
     }
-
-
 
 }

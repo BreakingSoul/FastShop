@@ -9,13 +9,14 @@
 
     <TextView
         android:id="@+id/user_name_drawer"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:gravity="left"
         android:text="Welcome!"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="@color/design_default_color_on_secondary"/>
+        android:textColor="#7C805C"/>
 
     <Button
         android:id="@+id/log_in_drawer"

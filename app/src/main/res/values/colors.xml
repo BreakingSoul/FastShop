@@ -20,4 +20,5 @@
     <color name="colorButtonRemoveBorder">#A32D24</color>
     <color name="colorMessageFromSupport">#E9FFFD</color>
     <color name="colorMessageToSupport">#DEFFBD</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

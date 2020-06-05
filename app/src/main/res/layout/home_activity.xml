@@ -28,7 +28,39 @@
                 android:background="@color/colorToolbar"
                 android:theme="?attr/actionBarTheme"
                 android:elevation="4dp"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/editItemName"
+                        android:layout_width="150dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:textColor="#FFFFFF"
+                        android:layout_centerInParent="true"
+                        android:gravity="start|bottom"
+                        android:inputType="textCapSentences"
+                        android:hint="Item name">
+
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/buttonSearchItemName"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_toRightOf="@id/editItemName"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/button_style_search"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        style="?android:attr/borderlessButtonStyle">
+                    </Button>
+
+                </RelativeLayout>
+
+
+            </androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:layout_width="match_parent"
